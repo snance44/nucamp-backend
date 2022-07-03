@@ -35,3 +35,13 @@ exports.jwtPassport = passport.use(
 );
 
 exports.verifyUser = passport.authenticate("jwt", { session: false });
+
+exports.verifyAdmin = (req, res, next) => {
+  if (req.user.admin) {
+    return next(); //go to next middleware function. Like the post request. 
+  } else {
+    const err = new Error("You are not authorized to perform this operation!"); //new keyword is oop. Error is a class made by node. When we say "new" it calls a new instance of the class Error. Error class has special properties, example a tracestack. 
+    err.statusCode = 403;
+    return next(err); 
+  }
+};
